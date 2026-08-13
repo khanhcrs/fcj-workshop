@@ -1,5 +1,4 @@
-baseURL = "/"
-relativeURLs = true
+baseURL = "https://khanhcrs.github.io/fcj-workshop/"
 canonifyURLs = false
 defaultContentLanguage = "en"
 
