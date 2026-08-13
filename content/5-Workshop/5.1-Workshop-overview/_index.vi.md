@@ -1,52 +1,71 @@
 ---
-title: "Tổng quan Workshop"
+title: "Tổng quan Workshop & Kiến trúc Hệ thống AWS"
 date: 2024-01-01
 weight: 1
 chapter: false
 pre: " <b> 5.1. </b> "
 ---
 
-### Tổng quan bài lab & Kiến trúc Đám mây AWS Enterprise
+### 1. Tổng quan dự án (Overview)
 
-Trong bài hướng dẫn này, chúng ta sẽ tìm hiểu kiến trúc tổng thể của hệ thống **Startups Blogs** và luồng xác thực đám mây bằng **Amazon Cognito (`us-east-1`)**.
+Mục tiêu của dự án **Startups Blogs** là xây dựng một nền tảng ứng dụng web doanh nghiệp tập trung, hỗ trợ quảng bá năng lực và kết nối cơ hội gọi vốn giữa các **Doanh nghiệp vừa và nhỏ (SMEs)**, **Chủ doanh nghiệp (Business Owners)**, **Startups** và các **Nhà đầu tư (Investors)**.
 
-#### 1. Sơ đồ Kiến trúc AWS Enterprise
-Hệ thống được thiết kế theo chuẩn Enterprise Microservices & Serverless kết hợp, tách biệt hoàn toàn giữa Frontend, Backend, Database và Hệ thống Xác thực. Toàn bộ hạ tầng được tự động hóa bằng **Terraform** (Infrastructure as Code).
+Hệ thống hoạt động theo mô hình **Khám phá & Kết nối Đầu tư (Investment Discovery & Connection)**:
+- **Doanh nghiệp**: Đăng ký tài khoản, công bố **Hồ sơ doanh nghiệp (Business Profile)**, chỉ số tài chính và các tin gọi vốn (**`FundingOpportunity`**).
+- **Nhà đầu tư**: Tra cứu, lọc doanh nghiệp theo ngành nghề/giai đoạn, theo dõi tin tức và gửi yêu cầu liên hệ trực tiếp (**`ContactRequest`**).
+- **Quản trị viên (Admin & Moderator)**: Duyệt doanh nghiệp mới (**`PENDING`** → **`APPROVED`**) và duyệt các đề xuất thay đổi hồ sơ (**`ChangeProposal`**).
 
-```mermaid
-graph TD
-    User([User Browser]) <-->|CloudFront CDN| S3_FE[Amazon S3 Frontend Hosting us-east-1]
-    User <-->|HTTPS / REST API| APIGW[Amazon API Gateway]
-    APIGW <-->|Forward Traffic| EC2[Amazon EC2 Backend NestJS + PM2]
-    EC2 <-->|Prisma ORM / Port 5432| RDS[(Amazon RDS PostgreSQL Private Subnet)]
-    EC2 <-->|aws-sdk & aws-jwt-verify| Cognito[Amazon Cognito User Pool us-east-1]
-    EC2 <-->|S3 SDK / Image Upload| S3_Storage[Amazon S3 Media Bucket]
-    EC2 <-->|Logs & Metrics| CloudWatch[Amazon CloudWatch Monitoring]
+> 💡 **Lưu ý nghiệp vụ**: Nền tảng **không** thực thi các giao dịch chuyển tiền, thanh toán trực tuyến hay xử lý giao dịch cổ phần trên trang.
+
+---
+
+### 2. Mục tiêu bài học (Objectives)
+
+- Nắm vững kiến trúc tổng quan của ứng dụng **Full-Stack** triển khai trên **AWS Cloud**.
+- Hiểu rõ vai trò của từng tầng công nghệ: **React 19 Frontend**, **NestJS REST API**, **Prisma ORM**, **PostgreSQL** và **Amazon Cognito**.
+- Định hình được phạm vi hạ tầng điện toán đám mây được tự động hóa bằng **Terraform**.
+
+---
+
+### 3. Kiến trúc hệ thống & Luồng dữ liệu (System Architecture)
+
+Luồng dữ liệu chính của hệ thống được tổ chức theo các tầng xử lý:
+
+```text
+Trình duyệt Người dùng (React 19 SPA)
+      ↓ HTTPS REST API
+Amazon API Gateway (HTTP API)
+      ↓ EC2 Security Group (Port 3000)
+NestJS Backend (Amazon EC2 trong Public Subnet)
+      ↓ Prisma ORM Client
+Amazon RDS PostgreSQL (Private Subnet - Port 5432)
 ```
 
-#### 2. Phân định rõ các vai trò và phạm vi đăng ký
-Hệ thống quản lý 4 vai trò người dùng chính (`UserRole`):
-- **`BUSINESS_OWNER`**: Đăng ký công khai. Tạo và quản lý hồ sơ doanh nghiệp, công bố tin gọi vốn.
-- **`INVESTOR`**: Đăng ký công khai. Tìm kiếm, tra cứu và đánh giá các cơ hội đầu tư.
-- **`ENTERPRISE_PARTNER`**: Đăng ký công khai. Tham gia hợp tác chiến lược và đồng đầu tư.
-- **`ADMIN`**: **Không mở đăng ký công khai**. Đồng bộ tự động với Cognito User Pool Group `ADMIN` qua `CognitoGroupsService`. Quản trị viên sử dụng Admin Dashboard để phê duyệt doanh nghiệp (`PUT /businesses/admin/:id/status`), kiểm duyệt bài viết và tạo Đề xuất thay đổi (`ChangeProposal`).
+Dịch vụ đám mây hỗ trợ:
+- **Amazon Cognito User Pool**: Quản lý đăng ký, đăng nhập và xác thực OTP Email.
+- **Amazon S3** & **Amazon CloudFront**: Lưu trữ mã nguồn tĩnh Frontend và tài liệu/hình ảnh đính kèm (`POST /upload`).
+- **Amazon CloudWatch** & **Amazon SNS**: Giám sát hiệu năng CPU của **Amazon EC2** và gửi cảnh báo qua Email.
 
-#### 3. Phân định tính năng Thực tế (Implemented) vs Tương lai (Planned)
-- **ĐÃ TRIỂN KHAI VÀ KIỂM THỬ (IMPLEMENTED AND VERIFIED)**:
-  - Hạ tầng mã nguồn Terraform IaC tại `terraform/` (Region: `us-east-1`).
-  - Cơ sở dữ liệu Amazon RDS PostgreSQL & Prisma ORM Schema đầy đủ.
-  - REST APIs Đọc & Ghi Doanh nghiệp (`POST/GET/PUT/DELETE /businesses`).
-  - REST APIs Đăng tin Gọi vốn (`POST/GET/PUT/DELETE /businesses/:businessId/funding-opportunities`).
-  - Tải ảnh đính kèm lên S3/MinIO (`POST /upload`).
-  - Backend xác thực Amazon Cognito, SecretHash HMAC-SHA256, và đồng bộ Cognito Group `ADMIN`.
-  - Bảo mật HttpOnly Signed Cookie & kiểm tra chữ ký RSA Token qua `aws-jwt-verify` từ JWKS `us-east-1`.
-  - Giao diện React 19 Frontend, AuthStore Zustand, Admin Dashboard (`/admin/*`) và Đề xuất thay đổi (Change Proposals).
-  - Yêu cầu liên hệ (`POST /businesses/:businessId/contact-requests`).
-- **DỰ KIẾN TƯƠNG LAI (PLANNED)**:
-  - Hệ thống Thông báo thời gian thực (Real-time Notification System với Notification Schema & WebSocket).
-  - Tối ưu hóa luồng phê duyệt gọi vốn đa tầng.
-  - Mở rộng bộ kiểm thử tự động E2E.
+---
 
-> Screenshot required:
-> Sơ đồ tổng quan kiến trúc hệ thống Startups Blogs Enterprise AWS Architecture.
-> Hide AWS account identifiers and sensitive values before capturing.
+### 4. Sơ đồ Kiến trúc Đám mây AWS
+
+![Kiến trúc AWS của Startups Blogs](/images/workshop/aws-architecture.png)
+
+*Hình 1. Kiến trúc triển khai tổng quan hệ thống Startups Blogs trên AWS Cloud.*
+
+> **Lưu ý:** Sơ đồ mang tính minh họa tổng thể. Phiên bản Terraform hiện tại chưa triển khai Route 53 và RDS Multi-AZ.
+
+---
+
+### 5. Giao diện Người dùng Khám phá Doanh nghiệp
+
+![Giao diện trang chủ](/images/workshop/frontend-homepage.png)
+
+*Hình 2. Giao diện trang chủ của nền tảng Startups Blogs.*
+
+---
+
+### 6. Tóm tắt (Summary)
+
+Trong phần này, chúng ta đã nắm bắt được mục tiêu nghiệp vụ của **Startups Blogs**, hiểu rõ ranh giới vai trò người dùng và hình dung được mô hình kết nối giữa **React 19**, **NestJS Backend**, **Amazon RDS PostgreSQL** và các dịch vụ đám mây **AWS**. Trong phần tiếp theo (5.2), chúng ta sẽ bắt đầu thiết lập môi trường phát triển cục bộ với **Docker Compose**.

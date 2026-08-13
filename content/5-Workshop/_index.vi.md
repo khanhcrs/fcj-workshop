@@ -6,28 +6,27 @@ chapter: false
 pre: " <b> 5. </b> "
 ---
 
-# Tích hợp Hạ tầng Đám mây AWS & Xác thực Amazon Cognito cho Ứng dụng Startups Blogs (React + NestJS + PostgreSQL + Terraform)
+#### Tổng quan (Overview)
 
-#### Tổng quan
+Nội dung Workshop bao gồm **7 phần thực hành từng bước**, hướng dẫn chi tiết quy trình thiết kế, phát triển và tự động hóa hạ tầng ứng dụng web doanh nghiệp **Startups Blogs** trên nền tảng **AWS** (Region: **`us-east-1`**).
 
-Trong bài thực hành (Workshop) này, bạn sẽ học cách thiết kế, xây dựng và tự động hóa toàn bộ hạ tầng đám mây Enterprise trên **AWS (Region: `us-east-1`)** cho nền tảng kết nối đầu tư **Startups Blogs**.
+Hệ thống kết hợp bộ công nghệ hiện đại bao gồm **React 19 (TypeScript, Vite)** ở Frontend, **NestJS REST API** ở Backend, cơ sở dữ liệu quan hệ **Amazon RDS PostgreSQL**, lưu trữ đa phương tiện **Amazon S3**, mạng phân phối **Amazon CloudFront**, cửa ngõ API **Amazon API Gateway**, dịch vụ xác thực Cloud-Native **Amazon Cognito**, giám sát **Amazon CloudWatch**, và tự động hóa 100% bằng **Terraform (Infrastructure as Code)**.
 
-Hệ thống kết hợp kiến trúc Full-Stack bao gồm **React 19 (TypeScript, Vite)** ở Frontend, **NestJS REST API** ở Backend, cơ sở dữ liệu **Amazon RDS PostgreSQL**, lưu trữ ảnh **Amazon S3**, CDN **CloudFront**, cửa ngõ API **API Gateway**, hệ thống xác thực **Amazon Cognito**, giám sát **CloudWatch** và 100% mã nguồn hạ tầng **Terraform (Infrastructure as Code)**.
+#### Các điểm kỹ thuật trọng tâm (Key Highlights)
 
-#### Điểm nổi bật của giải pháp
-+ **Hạ tầng Tự động hóa với Terraform**: Toàn bộ tài nguyên AWS (VPC, EC2, RDS, Cognito, API Gateway, S3, CloudFront, CloudWatch) được khai báo bằng mã nguồn Terraform trong thư mục `terraform/`.
-+ **Ủy quyền Quản lý Identity**: Không lưu trữ mật khẩu trực tiếp trong cơ sở dữ liệu PostgreSQL. Mật khẩu và xác thực người dùng được ủy quyền hoàn toàn cho Amazon Cognito.
-+ **Phân quyền Quản trị qua Cognito Groups**: Đồng bộ tự động vai trò `ADMIN` giữa ứng dụng NestJS và Cognito User Pool Group `ADMIN`.
-+ **Bảo mật Session qua HttpOnly Cookies**: Token xác thực (`sb_access_token`, `sb_id_token`, `sb_refresh_token`) được lưu trong HttpOnly Signed Cookies phía Server, chống lại nguy cơ đánh cắp token qua tấn công XSS.
-+ **Kiểm tra Chữ ký JWT với aws-jwt-verify**: NestJS Backend thẩm định trực tiếp chữ ký RSA của token từ Cognito JWKS `us-east-1` đối với mọi request được bảo vệ.
-+ **Tự động hóa Lưu trữ Ảnh S3 (`POST /upload`)**: Tích hợp `@aws-sdk/client-s3` cho phép tải ảnh đại diện và logo doanh nghiệp lên S3/MinIO.
+- **Tự động hóa Hạ tầng bằng Terraform**: Khai báo và khởi tạo toàn bộ tài nguyên AWS (**Amazon VPC**, **Amazon EC2**, **Amazon RDS**, **Amazon Cognito**, **Amazon API Gateway**, **Amazon S3**, **Amazon CloudFront**, **Amazon CloudWatch**, **Amazon SNS**) thông qua mã nguồn trong thư mục `terraform/`.
+- **Ủy quyền Quản lý Danh tính Cloud-Native**: Mật khẩu người dùng không lưu trong **PostgreSQL** mà được ủy quyền hoàn toàn cho **Amazon Cognito User Pool**.
+- **Cấu hình Public App Client**: Sử dụng **Cognito Public App Client** (**`generate_secret = false`**) phù hợp với mô hình ứng dụng web hiện đại.
+- **Thẩm định Chữ ký số RSA bằng `aws-jwt-verify`**: NestJS Backend kiểm tra tính toàn vẹn và thẩm định chữ ký mã hóa **RS256** của **JWT** trực tiếp với tập khóa công khai **JWKS** từ Cognito **`us-east-1`**.
+- **Phân quyền Hai tầng (Dual-Layer Authorization)**: Kết hợp giữa **`JwtAuthGuard`** (xác thực danh tính), **`RolesGuard`** (phân quyền vai trò **`ADMIN`**, **`MODERATOR`**, **`USER`**), và kiểm tra **Resource Ownership** (**`ownerId === userId`**) tại Service Layer.
+- **Lưu trữ Đa phương tiện Amazon S3 (`POST /upload`)**: Tích hợp **`@aws-sdk/client-s3`** hỗ trợ tải ảnh logo, avatar, ảnh bìa doanh nghiệp lên **Amazon S3 Media Bucket** / **MinIO**.
 
-#### Nội dung các phần hướng dẫn
+#### Các phần thực hành của Workshop (Workshop Modules)
 
-1. [Tổng quan về Workshop & Kiến trúc AWS Enterprise](5.1-Workshop-overview/)
-2. [Chuẩn bị môi trường, Terraform & Cơ sở dữ liệu PostgreSQL](5.2-Prerequiste/)
-3. [Cấu hình Amazon Cognito User Pool & Confidential App Client](5.3-Cognito-setup/)
-4. [Tích hợp Backend NestJS, REST APIs & HttpOnly Cookie Session](5.4-Backend-integration/)
-5. [Tích hợp Frontend React 19, Zustand State & Admin Dashboard](5.5-Frontend-integration/)
-6. [Tự động hóa Hạ tầng bằng Terraform & Giám sát CloudWatch](5.6-Security-review/)
-7. [Dọn dẹp tài nguyên & Tổng kết](5.7-Cleanup/)
+1. [5.1 Tổng quan Workshop & Kiến trúc Hệ thống AWS](5.1-Workshop-overview/)
+2. [5.2 Thiết lập Môi trường Phát triển Cục bộ, Docker & PostgreSQL](5.2-Prerequiste/)
+3. [5.3 Khởi tạo Schema Cơ sở Dữ liệu, Prisma ORM & Dữ liệu Mẫu](5.3-Cognito-setup/)
+4. [5.4 Cấu hình Amazon Cognito User Pool, Public App Client & RBAC](5.4-Backend-integration/)
+5. [5.5 Tích hợp NestJS REST API, Upload S3 & Thẩm định RSA JWT](5.5-Frontend-integration/)
+6. [5.6 Tích hợp React 19 Frontend, Tìm kiếm Doanh nghiệp & Admin Dashboard](5.6-Security-review/)
+7. [5.7 Tự động hóa Hạ tầng bằng Terraform, Giám sát & Dọn dẹp Tài nguyên](5.7-Cleanup/)

@@ -1,43 +1,108 @@
 ---
-title: "React Frontend Integration"
+title: "NestJS REST API Integration, S3 Uploads & RSA JWT Verification"
 date: 2024-01-01
 weight: 5
 chapter: false
 pre: " <b> 5.5. </b> "
 ---
 
-### React 19 Frontend Integration, Zustand State, REST APIs & Admin Dashboard
+### 1. Overview
 
-In this section, we examine how the **React 19 Frontend** application connects to NestJS backend REST APIs, manages state via Zustand, and presents the **Admin Dashboard UI**.
+The **NestJS Backend** server processes **REST API** requests, uploads media files to **Amazon S3**, cryptographically verifies **RSA JWT** digital signatures using **`aws-jwt-verify`**, and enforces multi-layer authorization controls.
 
-#### 1. Authentication State & Interceptors (`authStore.ts` & Axios Interceptors)
-The frontend utilizes **Zustand** combined with **Axios Interceptors** to automatically attach Bearer JWT Tokens to API requests:
+---
+
+### 2. Learning Objectives
+
+- Understand the structure of Controllers and Services within NestJS modular architecture.
+- Implement cryptographic **RSA JWT** verification using **`aws-jwt-verify`** against **Cognito JWKS** in **`us-east-1`**.
+- Configure the media upload endpoint `POST /upload` using **`@aws-sdk/client-s3`**.
+- Utilize **Swagger UI** for testing and documenting **REST API** endpoints.
+
+---
+
+### 3. NestJS Backend REST API Architecture
+
+NestJS codebase is organized into primary functional modules:
+
+- **Businesses (`BusinessesController`)**:
+  - `GET /businesses`: Public business discovery listing (`isVerified: true`, `status: APPROVED`).
+  - `POST /businesses`: Create new business profile (Requires **`JwtAuthGuard`**).
+  - `PUT /businesses/:id`: Update business profile (Validates `business.ownerId === user.userId`).
+  - `PUT /businesses/admin/:id/status`: Admin approval workflow (**`PENDING`** → **`APPROVED`**).
+- **Funding Opportunities (`FundingOpportunitiesController`)**:
+  - `POST /businesses/:businessId/funding-opportunities`: Publish capital raising listing.
+  - `GET /businesses/:businessId/funding-opportunities`: Retrieve funding opportunities.
+- **Upload (`UploadController`)**:
+  - `POST /upload`: Uploads image files (logos, covers, avatars) to **Amazon S3 Media Bucket** / **MinIO** via **`@aws-sdk/client-s3`**.
+- **Change Proposals (`ProposalsController`)**:
+  - `POST /proposals`: Create JSON diff change proposal.
+  - `POST /proposals/:id/decision`: Admin decision (**`APPROVED`**) applies JSON diff to **PostgreSQL** inside `prisma.$transaction`.
+
+---
+
+### 4. Cryptographic RSA JWT Verification via `aws-jwt-verify`
+
+On the Backend, **`JwtAuthGuard`** extracts tokens from the **`Authorization: Bearer <accessToken>`** HTTP header and validates RSA digital signatures using **`aws-jwt-verify`**:
 
 ```typescript
-// Inside services/api.ts
-api.interceptors.request.use((config) => {
-  const token = useAuthStore.getState().token;
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+// Excerpt from backend/src/auth/guards/jwt-auth.guard.ts
+import { CognitoJwtVerifier } from 'aws-jwt-verify';
+
+@Injectable()
+export class JwtAuthGuard implements CanActivate {
+  private readonly verifier = CognitoJwtVerifier.create({
+    userPoolId: process.env.COGNITO_USER_POOL_ID!,
+    clientId: process.env.COGNITO_CLIENT_ID!,
+    tokenUse: 'access',
+  });
+
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    const request = context.switchToHttp().getRequest();
+    const authorization = request.headers.authorization;
+    const token = authorization?.startsWith('Bearer ') ? authorization.slice(7) : undefined;
+
+    if (!token) throw new UnauthorizedException('Missing access token');
+
+    // Cryptographically verify RSA signature against Cognito JWKS endpoint
+    const payload = await this.verifier.verify(token);
+    
+    // Automatically provision user account in PostgreSQL
+    const user = await this.usersService.findOrCreateFromCognito({
+      cognitoSub: payload.sub,
+      email: payload.email,
+      name: payload.name,
+    });
+
+    request.user = { userId: user.id, role: user.role };
+    return true;
   }
-  return config;
-});
+}
 ```
 
-#### 2. Capital Raising Integration & Backend Write APIs
-The capital submission view (`PostIdea.tsx` / `RaiseCapital`) connects directly to backend write endpoints:
-- Business creation (`POST /api/v1/businesses`).
-- Funding opportunity publishing (`POST /api/v1/businesses/:businessId/funding-opportunities`).
-- Image file upload (`POST /api/v1/upload`).
+---
 
-#### 3. Admin Dashboard UI (`/admin/*`)
-The frontend features a comprehensive Admin area under `/admin`:
-- **Overview (`/admin/overview`)**: Statistical metrics for Users, Businesses, Articles, and Pending Submissions.
-- **Businesses Management (`/admin/businesses`)**: Approving (`PUBLISHED`) or Rejecting (`REJECTED`) businesses, viewing financial metrics (`AdminViewBusiness`).
-- **Users Management (`/admin/users`)**: Managing system-wide users and role assignments (`USER`, `MODERATOR`, `ADMIN`).
-- **Articles Management (`/admin/articles`)**: Article preview, comment moderation, and advanced filtering.
-- **Change Proposals (`/admin/businesses/:id/edit`)**: Admin JSON change proposal generation with founder Diff/Merge approval interfaces.
+### 5. Swagger REST API Documentation Interface
 
-> Screenshot required:
-> Admin Dashboard Overview page (`/admin/overview`) showing stats widgets and business approval controls.
-> Hide AWS account identifiers and sensitive values before capturing.
+NestJS integrates `@nestjs/swagger` to automatically generate documentation and test REST API endpoints:
+
+![Swagger API Documentation](/images/workshop/swagger-api.png)
+
+*Figure 10. Swagger interface for testing and documenting the NestJS REST API.*
+
+---
+
+### 6. Common HTTP Error Troubleshooting
+
+- **HTTP 401 Unauthorized**:
+  - Missing **`Authorization: Bearer <token>`** header.
+  - Token expired or mismatched Cognito User Pool ID / Client ID.
+- **HTTP 403 Forbidden**:
+  - User lacks **`ADMIN`** role when accessing administrative routes (**`RolesGuard`**).
+  - User does not match resource owner (`business.ownerId !== userId`).
+
+---
+
+### 7. Summary
+
+We have successfully integrated the **NestJS REST API** with **`aws-jwt-verify`** to cryptographically validate **RSA** signatures from **Amazon Cognito** and configured S3 uploads. In the next module (5.6), we will integrate the **React 19 Frontend** and **Admin Dashboard**.

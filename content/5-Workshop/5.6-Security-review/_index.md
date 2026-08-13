@@ -1,54 +1,85 @@
 ---
-title: "Terraform Automation & Security"
+title: "React 19 Frontend Integration, Business Discovery & Admin Dashboard"
 date: 2024-01-01
 weight: 6
 chapter: false
 pre: " <b> 5.6. </b> "
 ---
 
-### Infrastructure Automation via Terraform (IaC), CloudWatch Monitoring & Security Review
+### 1. Overview
 
-In this section, we examine how the entire AWS Cloud Infrastructure of Startups Blogs is automated using **Terraform (Infrastructure as Code)** and monitored via **Amazon CloudWatch** in region **`us-east-1`**.
+The **React 19 Frontend** application (Vite + TypeScript) provides a modern user experience connecting to **NestJS REST APIs**, managing session state via **Zustand**, attaching Bearer Tokens automatically via **Axios Interceptors**, and delivering dedicated workflows for **Businesses**, **Investors**, and **Administrators (Admin Dashboard)**.
 
-#### 1. Infrastructure Automation via Terraform (`terraform/`)
+---
 
-100% of AWS cloud resources are declared in the `terraform/` directory:
-- **VPC Infrastructure (`vpc.tf`)**: Creates a Virtual Private Cloud with 2 Public Subnets and 2 Private Subnets spanning Availability Zones `us-east-1a` and `us-east-1b`.
-- **RDS Database (`rds.tf`)**: Provisions Amazon RDS PostgreSQL in Private Subnets. Security Groups restrict database port 5432 access strictly to the EC2 instance.
-- **EC2 Compute (`ec2.tf`)**: Provisions an Ubuntu EC2 instance running NestJS backend via PM2 24/7.
-- **Cognito Auth (`cognito.tf`)**: Declares User Pool and Confidential App Client with Secret Key.
-- **API Gateway (`apigateway.tf`)**: Routes public HTTPS API requests to the backend EC2 server.
-- **S3 & CloudFront (`s3_cloudfront.tf`)**: Configures S3 static frontend hosting and CloudFront global CDN distribution.
-- **CloudWatch & Alerts (`monitoring.tf`)**: Configures Log Groups, CloudWatch Alarms, and SNS Email notifications.
+### 2. Learning Objectives
 
-Automated deployment commands:
+- Understand client authentication state management using Zustand (`authStore.ts`).
+- Configure **Axios Request Interceptors** to automatically attach **`Authorization: Bearer <accessToken>`** headers.
+- Explore business discovery interfaces, smart filtering, and funding opportunity listings.
+- Understand Admin Dashboard UI (`/admin/*`) operations, **RBAC** access control, and session authentication error troubleshooting.
 
-```bash
-cd terraform
-terraform init
-terraform plan
-terraform apply -auto-approve
+---
+
+### 3. State Management & Axios Interceptor (`authStore` & Axios)
+
+Upon successful Cognito login, the Frontend stores the Access Token in `localStorage` and automatically attaches it to outgoing HTTP requests:
+
+```typescript
+// Axios Request Interceptor configuration in frontend/src/lib/api.ts
+import axios from 'axios';
+import { useAuthStore } from '@/stores/authStore';
+
+export const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL || '/api',
+});
+
+api.interceptors.request.use((config) => {
+  const token = useAuthStore.getState().token || localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 ```
 
 ---
 
-#### 2. System Monitoring via Amazon CloudWatch (`monitoring.tf`)
+### 4. Investor Business Discovery Interface
 
-CloudWatch provides continuous monitoring across the AWS infrastructure:
-- **Log Groups**: Centralizes real-time logs from API Gateway and NestJS backend on EC2.
-- **CloudWatch Dashboard**: Tracks CPU Utilization, Memory, and Network I/O metrics for EC2 and RDS instances.
-- **SNS Alerts**: Automatically triggers email notifications (`alert_email`) if EC2 CPU usage exceeds 80% or RDS health degrades.
+Investors utilize web interfaces to search for companies and evaluate capital raising opportunities:
+- Filter businesses by industry, location, employee size, and stage.
+- Inspect financial highlights (`financialHighlights`) and historical funding rounds (`FundingRound`).
+- Save companies (**`SavedBusiness`**), follow updates (**`BusinessFollow`**), and submit direct contact requests (**`ContactRequest`**).
+
+![Business Listing](/images/workshop/frontend-business-listing.png)
+
+*Figure 11. Business listing and discovery interface of Startups Blogs.*
 
 ---
 
-#### 3. Enterprise Security Best Practices Review
+### 5. Frontend Role-Based Access Control
 
-- **Network Security**: RDS PostgreSQL is strictly isolated within Private Subnets, preventing direct Internet access.
-- **Server-Side Secret Isolation**: `COGNITO_CLIENT_SECRET` remains strictly on the NestJS backend, utilizing HMAC-SHA256 `SECRET_HASH` for all Cognito SDK commands.
-- **RSA JWT Signature Verification (`us-east-1`)**: Uses `jwks-rsa` / `aws-jwt-verify` to cryptographically validate RSA signatures against Cognito JWKS endpoints.
-- **Dual-Layer Authorization**: Enforces JWT verification and `ownerId` resource ownership validation for all business data modifications.
-- **Zero Credentials Exposure**: AWS credentials, Client Secrets, and JWT tokens are excluded from public source repositories.
+When an authenticated user attempts to access administrative routes (`/admin/*`) without having Administrator privileges (not in the Cognito Group **`ADMIN`**), the frontend guards block navigation and display an **Access Denied** interface:
 
-> Screenshot required:
-> Terraform execution output showing successful creation of AWS infrastructure resources in `us-east-1`.
-> Hide AWS account identifiers and sensitive values before capturing.
+![Admin Access Denied](/images/workshop/admin-dashboard-dennied.png)
+
+*Figure 12. Access Denied page displayed when a user does not have permission to access an administrative route.*
+
+> **Note:** Frontend route protection improves navigation and user experience, but backend APIs must still enforce authorization through **`JwtAuthGuard`**, **`RolesGuard`**, and **Resource Ownership** checks.
+
+---
+
+### 6. Integration Troubleshooting: Admin Session Verification
+
+During integration testing, if connection between the **Admin Dashboard** and **Amazon API Gateway** or **NestJS Backend** fails or session verification cannot complete (due to expired tokens or gateway routing issues), an error banner is presented:
+
+![Admin API Session Failure](/images/workshop/admin-dashboard.png)
+
+*Figure 13. Example of an Admin API/session verification failure during integration troubleshooting.*
+
+---
+
+### 7. Summary
+
+We have successfully integrated the **React 19 Frontend** with the **NestJS Backend**, configured automated Bearer Token handling, and explored UI workflows for both Investors and Administrators. In the final hands-on module (5.7), we will automate the AWS cloud infrastructure using **Terraform** and execute resource cleanup.

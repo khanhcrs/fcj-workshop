@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 520" width="100%" height="100%" style="background-color: #0f172a; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <defs>
+    <linearGradient id="header-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.3" />
+    </filter>
+  </defs>
+
+  <!-- Title -->
+  <text x="480" y="38" text-anchor="middle" fill="#f8fafc" font-size="20" font-weight="700">
+    Startups Blogs – Role-Based Action Workflow
+  </text>
+  <text x="480" y="60" text-anchor="middle" fill="#94a3b8" font-size="13">
+    Phân định Vai trò &amp; Luồng Thao tác của các Đối tượng Người dùng trên Nền tảng
+  </text>
+
+  <!-- Role Column 1: Business Owner / SME -->
+  <g transform="translate(30, 85)" filter="url(#shadow)">
+    <rect width="285" height="405" rx="10" fill="#1e293b" stroke="#f97316" stroke-width="2"/>
+    <rect x="0" y="0" width="285" height="55" rx="10" fill="#ea580c"/>
+    <!-- Overlap bottom rounded corners of header -->
+    <rect x="0" y="45" width="285" height="10" fill="#ea580c"/>
+    <text x="142" y="33" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">Chủ Doanh nghiệp / SME</text>
+    
+    <!-- Action List -->
+    <g transform="translate(18, 75)">
+      <circle cx="10" cy="12" r="6" fill="#f97316"/>
+      <text x="26" y="16" fill="#f8fafc" font-size="13" font-weight="600">1. Đăng ký &amp; Xác thực Email</text>
+      <text x="26" y="34" fill="#94a3b8" font-size="11">Xác thực OTP 6 chữ số từ Cognito</text>
+
+      <circle cx="10" cy="72" r="6" fill="#f97316"/>
+      <text x="26" y="76" fill="#f8fafc" font-size="13" font-weight="600">2. Tạo Hồ sơ Doanh nghiệp</text>
+      <text x="26" y="94" fill="#94a3b8" font-size="11">Thông tin pháp lý, tài chính, sản phẩm</text>
+
+      <circle cx="10" cy="132" r="6" fill="#f97316"/>
+      <text x="26" y="136" fill="#f8fafc" font-size="13" font-weight="600">3. Công bố Cơ hội Gọi vốn</text>
+      <text x="26" y="154" fill="#94a3b8" font-size="11">Mục tiêu vốn, kế hoạch sử dụng vốn</text>
+
+      <circle cx="10" cy="192" r="6" fill="#f97316"/>
+      <text x="26" y="196" fill="#f8fafc" font-size="13" font-weight="600">4. Đề xuất Thay đổi (ChangeProposal)</text>
+      <text x="26" y="214" fill="#94a3b8" font-size="11">Gửi bản sửa đổi cho Admin phê duyệt</text>
+
+      <circle cx="10" cy="252" r="6" fill="#f97316"/>
+      <text x="26" y="256" fill="#f8fafc" font-size="13" font-weight="600">5. Tiếp nhận &amp; Phản hồi Liên hệ</text>
+      <text x="26" y="274" fill="#94a3b8" font-size="11">Xử lý Yêu cầu Liên hệ từ Nhà đầu tư</text>
+    </g>
+  </g>
+
+  <!-- Role Column 2: Investor -->
+  <g transform="translate(337, 85)" filter="url(#shadow)">
+    <rect width="285" height="405" rx="10" fill="#1e293b" stroke="#0284c7" stroke-width="2"/>
+    <rect x="0" y="0" width="285" height="55" rx="10" fill="#0284c7"/>
+    <rect x="0" y="45" width="285" height="10" fill="#0284c7"/>
+    <text x="142" y="33" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">Nhà Đầu tư (Investor)</text>
+    
+    <!-- Action List -->
+    <g transform="translate(18, 75)">
+      <circle cx="10" cy="12" r="6" fill="#38bdf8"/>
+      <text x="26" y="16" fill="#f8fafc" font-size="13" font-weight="600">1. Tạo Hồ sơ Nhà Đầu tư</text>
+      <text x="26" y="34" fill="#94a3b8" font-size="11">Định hình khẩu vị &amp; danh mục đầu tư</text>
+
+      <circle cx="10" cy="72" r="6" fill="#38bdf8"/>
+      <text x="26" y="76" fill="#f8fafc" font-size="13" font-weight="600">2. Tìm kiếm &amp; Lọc Doanh nghiệp</text>
+      <text x="26" y="94" fill="#94a3b8" font-size="11">Lọc theo ngành, quy mô vốn, tài chính</text>
+
+      <circle cx="10" cy="132" r="6" fill="#38bdf8"/>
+      <text x="26" y="136" fill="#f8fafc" font-size="13" font-weight="600">3. Đánh giá Chỉ số &amp; Vòng vốn</text>
+      <text x="26" y="154" fill="#94a3b8" font-size="11">Xem thông tin minh bạch &amp; bài viết</text>
+
+      <circle cx="10" cy="192" r="6" fill="#38bdf8"/>
+      <text x="26" y="196" fill="#f8fafc" font-size="13" font-weight="600">4. Lưu &amp; Theo dõi Doanh nghiệp</text>
+      <text x="26" y="214" fill="#94a3b8" font-size="11">SavedBusiness &amp; BusinessFollow</text>
+
+      <circle cx="10" cy="252" r="6" fill="#38bdf8"/>
+      <text x="26" y="256" fill="#f8fafc" font-size="13" font-weight="600">5. Gửi Yêu cầu Liên hệ (ContactRequest)</text>
+      <text x="26" y="274" fill="#94a3b8" font-size="11">Kết nối trực tiếp tới Founder / CEO</text>
+    </g>
+  </g>
+
+  <!-- Role Column 3: Admin / Moderator -->
+  <g transform="translate(645, 85)" filter="url(#shadow)">
+    <rect width="285" height="405" rx="10" fill="#1e293b" stroke="#8b5cf6" stroke-width="2"/>
+    <rect x="0" y="0" width="285" height="55" rx="10" fill="#7c3aed"/>
+    <rect x="0" y="45" width="285" height="10" fill="#7c3aed"/>
+    <text x="142" y="33" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">Quản trị viên (Admin)</text>
+    
+    <!-- Action List -->
+    <g transform="translate(18, 75)">
+      <circle cx="10" cy="12" r="6" fill="#a78bfa"/>
+      <text x="26" y="16" fill="#f8fafc" font-size="13" font-weight="600">1. Duyệt Hồ sơ Doanh nghiệp</text>
+      <text x="26" y="34" fill="#94a3b8" font-size="11">Duyệt trạng thái PENDING → APPROVED</text>
+
+      <circle cx="10" cy="72" r="6" fill="#a78bfa"/>
+      <text x="26" y="76" fill="#f8fafc" font-size="13" font-weight="600">2. Phê duyệt Change Proposals</text>
+      <text x="26" y="94" fill="#94a3b8" font-size="11">So sánh Diff &amp; chấp thuận cập nhật</text>
+
+      <circle cx="10" cy="132" r="6" fill="#a78bfa"/>
+      <text x="26" y="136" fill="#f8fafc" font-size="13" font-weight="600">3. Quản lý Bài viết &amp; Tin tức</text>
+      <text x="26" y="154" fill="#94a3b8" font-size="11">Kiểm duyệt nội dung bài đăng truyền thông</text>
+
+      <circle cx="10" cy="192" r="6" fill="#a78bfa"/>
+      <text x="26" y="196" fill="#f8fafc" font-size="13" font-weight="600">4. Đồng bộ Cognito Groups</text>
+      <text x="26" y="214" fill="#94a3b8" font-size="11">Quản lý quyền ADMIN qua Cognito Group</text>
+
+      <circle cx="10" cy="252" r="6" fill="#a78bfa"/>
+      <text x="26" y="256" fill="#f8fafc" font-size="13" font-weight="600">5. Giám sát Hệ thống &amp; Audit Logs</text>
+      <text x="26" y="274" fill="#94a3b8" font-size="11">Quản lý tài khoản &amp; theo dõi lỗi bảo mật</text>
+    </g>
+  </g>
+</svg>

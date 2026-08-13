@@ -226,3 +226,26 @@ div.notices.info p {
   border-top: 30px solid #fd9827;
   background: #fff2db;
 }
+
+/* Disable copy icon / button for inline code */
+:not(pre) > code + span.copy-to-clipboard,
+code:not(pre code) + span.copy-to-clipboard {
+  display: none !important;
+}
+
+/* Remove all special visual styling from inline code */
+:not(pre) > code {
+  color: inherit !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+
+  font-family: inherit !important;
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  line-height: inherit !important;
+}
+
