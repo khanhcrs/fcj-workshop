@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" width="100%" height="100%" style="background-color: #0f172a; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <!-- Definitions for gradients and markers -->
+  <defs>
+    <linearGradient id="primary-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#334155" />
+    </linearGradient>
+    <linearGradient id="accent-orange" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f97316" />
+      <stop offset="100%" stop-color="#ea580c" />
+    </linearGradient>
+    <linearGradient id="accent-blue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0284c7" />
+      <stop offset="100%" stop-color="#0369a1" />
+    </linearGradient>
+    <linearGradient id="accent-green" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+    <linearGradient id="accent-purple" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8b5cf6" />
+      <stop offset="100%" stop-color="#6d28d9" />
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#94a3b8" />
+    </marker>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.3" />
+    </filter>
+  </defs>
+
+  <!-- Title -->
+  <text x="480" y="38" text-anchor="middle" fill="#f8fafc" font-size="20" font-weight="700" letter-spacing="0.5">
+    Startups Blogs – Overall Business Workflow
+  </text>
+  <text x="480" y="60" text-anchor="middle" fill="#94a3b8" font-size="13">
+    Luồng nghiệp vụ tổng thể của Nền tảng Kết nối Đầu tư Doanh nghiệp (SMEs &amp; Startups)
+  </text>
+
+  <!-- Main Workflow Nodes -->
+
+  <!-- Step 1: User Registration & OTP -->
+  <g transform="translate(40, 100)" filter="url(#shadow)">
+    <rect width="250" height="90" rx="10" fill="url(#primary-grad)" stroke="#38bdf8" stroke-width="2"/>
+    <rect x="12" y="12" width="36" height="36" rx="6" fill="url(#accent-blue)"/>
+    <text x="30" y="35" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">1</text>
+    <text x="60" y="34" fill="#f8fafc" font-size="14" font-weight="600">Đăng ký &amp; Xác thực Email</text>
+    <text x="60" y="52" fill="#cbd5e1" font-size="11">Amazon Cognito User Pool</text>
+    <text x="60" y="68" fill="#94a3b8" font-size="11">Xác thực OTP 6 chữ số qua Email</text>
+  </g>
+
+  <line x1="290" y1="145" x2="340" y2="145" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Step 2: Business & Funding Profile Creation -->
+  <g transform="translate(355, 100)" filter="url(#shadow)">
+    <rect width="260" height="90" rx="10" fill="url(#primary-grad)" stroke="#f97316" stroke-width="2"/>
+    <rect x="12" y="12" width="36" height="36" rx="6" fill="url(#accent-orange)"/>
+    <text x="30" y="35" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">2</text>
+    <text x="60" y="34" fill="#f8fafc" font-size="14" font-weight="600">Hồ sơ &amp; Nhu cầu Gọi vốn</text>
+    <text x="60" y="52" fill="#cbd5e1" font-size="11">Chủ doanh nghiệp / SME</text>
+    <text x="60" y="68" fill="#94a3b8" font-size="11">Nhập chỉ số tài chính &amp; gói vốn</text>
+  </g>
+
+  <line x1="615" y1="145" x2="665" y2="145" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Step 3: Admin Review & Moderation -->
+  <g transform="translate(680, 100)" filter="url(#shadow)">
+    <rect width="240" height="90" rx="10" fill="url(#primary-grad)" stroke="#8b5cf6" stroke-width="2"/>
+    <rect x="12" y="12" width="36" height="36" rx="6" fill="url(#accent-purple)"/>
+    <text x="30" y="35" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">3</text>
+    <text x="60" y="34" fill="#f8fafc" font-size="14" font-weight="600">Phê duyệt Quản trị</text>
+    <text x="60" y="52" fill="#cbd5e1" font-size="11">Admin / Moderator</text>
+    <text x="60" y="68" fill="#94a3b8" font-size="11">Duyệt Business (PENDING → APPROVED)</text>
+  </g>
+
+  <!-- Vertical Connection Arrow from Step 3 to Step 4 -->
+  <path d="M 800 190 L 800 245 L 800 260" stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- Step 4: Investment Opportunity Publishing & Discovery -->
+  <g transform="translate(680, 275)" filter="url(#shadow)">
+    <rect width="240" height="90" rx="10" fill="url(#primary-grad)" stroke="#10b981" stroke-width="2"/>
+    <rect x="12" y="12" width="36" height="36" rx="6" fill="url(#accent-green)"/>
+    <text x="30" y="35" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">4</text>
+    <text x="60" y="34" fill="#f8fafc" font-size="14" font-weight="600">Công bố Cơ hội Đầu tư</text>
+    <text x="60" y="52" fill="#cbd5e1" font-size="11">Công khai trên Nền tảng</text>
+    <text x="60" y="68" fill="#94a3b8" font-size="11">Status: Published / Public List</text>
+  </g>
+
+  <line x1="680" y1="320" x2="630" y2="320" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Step 5: Investor Filtering & Evaluation -->
+  <g transform="translate(355, 275)" filter="url(#shadow)">
+    <rect width="260" height="90" rx="10" fill="url(#primary-grad)" stroke="#0284c7" stroke-width="2"/>
+    <rect x="12" y="12" width="36" height="36" rx="6" fill="url(#accent-blue)"/>
+    <text x="30" y="35" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">5</text>
+    <text x="60" y="34" fill="#f8fafc" font-size="14" font-weight="600">Tìm kiếm &amp; Thẩm định</text>
+    <text x="60" y="52" fill="#cbd5e1" font-size="11">Nhà đầu tư (Investor)</text>
+    <text x="60" y="68" fill="#94a3b8" font-size="11">Lọc ngành nghề, tài chính, quy mô</text>
+  </g>
+
+  <line x1="355" y1="320" x2="305" y2="320" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Step 6: Direct Connection & Change Proposal Support -->
+  <g transform="translate(40, 275)" filter="url(#shadow)">
+    <rect width="250" height="90" rx="10" fill="url(#primary-grad)" stroke="#10b981" stroke-width="2"/>
+    <rect x="12" y="12" width="36" height="36" rx="6" fill="url(#accent-green)"/>
+    <text x="30" y="35" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">6</text>
+    <text x="60" y="34" fill="#f8fafc" font-size="14" font-weight="600">Kết nối &amp; Đề xuất Thay đổi</text>
+    <text x="60" y="52" fill="#cbd5e1" font-size="11">ContactRequest &amp; ChangeProposal</text>
+    <text x="60" y="68" fill="#94a3b8" font-size="11">Gửi liên hệ &amp; đề xuất cập nhật</text>
+  </g>
+
+  <!-- Bottom Info Banner -->
+  <rect x="40" y="405" width="880" height="42" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+  <text x="480" y="431" text-anchor="middle" fill="#94a3b8" font-size="12">
+    Quá trình kết nối được hỗ trợ bởi hệ thống phân quyền 2 tầng (NestJS RolesGuard &amp; Cognito Groups) và lưu trữ bảo mật tại PostgreSQL.
+  </text>
+</svg>

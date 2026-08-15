@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" width="100%" height="100%" style="background-color: #0f172a; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <defs>
+    <linearGradient id="card-dark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#38bdf8" />
+    </marker>
+    <marker id="green-arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#10b981" />
+    </marker>
+    <marker id="red-arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#ef4444" />
+    </marker>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.3" />
+    </filter>
+  </defs>
+
+  <!-- Title -->
+  <text x="480" y="35" text-anchor="middle" fill="#f8fafc" font-size="20" font-weight="700">
+    Startups Blogs – Change Proposal &amp; Data Moderation Workflow
+  </text>
+  <text x="480" y="56" text-anchor="middle" fill="#94a3b8" font-size="13">
+    Quy trình Đề xuất Thay đổi &amp; Duyệt Diff Cập nhật Dữ liệu Doanh nghiệp / Bài viết
+  </text>
+
+  <!-- Step 1: Proposer submits changes -->
+  <g transform="translate(30, 95)" filter="url(#shadow)">
+    <rect width="210" height="150" rx="8" fill="url(#card-dark)" stroke="#38bdf8" stroke-width="2"/>
+    <rect x="0" y="0" width="210" height="36" rx="8" fill="#0284c7"/>
+    <rect x="0" y="26" width="210" height="10" fill="#0284c7"/>
+    <text x="105" y="23" text-anchor="middle" fill="#ffffff" font-size="13" font-weight="bold">1. Người đề xuất (Proposer)</text>
+    
+    <text x="15" y="58" fill="#f8fafc" font-size="11" font-weight="600">• Business Owner / Author</text>
+    <text x="15" y="78" fill="#cbd5e1" font-size="10">Gửi yêu cầu chỉnh sửa profile/bài viết</text>
+    <text x="15" y="96" fill="#94a3b8" font-size="10">Ví dụ: Tên pháp lý, quy mô, mô tả</text>
+    <rect x="15" y="110" width="180" height="26" rx="4" fill="#334155"/>
+    <text x="105" y="127" text-anchor="middle" fill="#38bdf8" font-size="10" font-weight="bold">Submit Proposed Changes</text>
+  </g>
+
+  <!-- Arrow Step 1 -> Step 2 -->
+  <line x1="240" y1="170" x2="285" y2="170" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Step 2: NestJS Proposal Validation & PENDING Creation -->
+  <g transform="translate(295, 95)" filter="url(#shadow)">
+    <rect width="220" height="150" rx="8" fill="url(#card-dark)" stroke="#f97316" stroke-width="2"/>
+    <rect x="0" y="0" width="220" height="36" rx="8" fill="#ea580c"/>
+    <rect x="0" y="26" width="220" height="10" fill="#ea580c"/>
+    <text x="110" y="23" text-anchor="middle" fill="#ffffff" font-size="13" font-weight="bold">2. NestJS Proposal Module</text>
+
+    <text x="15" y="58" fill="#f8fafc" font-size="10" font-weight="600">Check Field Allowlist (class-validator)</text>
+    <text x="15" y="75" fill="#cbd5e1" font-size="10">Tạo ChangeProposal trong DB:</text>
+    <rect x="15" y="85" width="190" height="52" rx="4" fill="#0f172a" stroke="#f97316" stroke-width="1"/>
+    <text x="25" y="103" fill="#fdba74" font-size="10" font-weight="bold">proposedChanges: JSON</text>
+    <text x="25" y="121" fill="#ef4444" font-size="10" font-weight="bold">status: "PENDING"</text>
+  </g>
+
+  <!-- Arrow Step 2 -> Step 3 -->
+  <line x1="515" y1="170" x2="560" y2="170" stroke="#f97316" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Step 3: Admin Review Diff -->
+  <g transform="translate(570, 95)" filter="url(#shadow)">
+    <rect width="210" height="150" rx="8" fill="url(#card-dark)" stroke="#8b5cf6" stroke-width="2"/>
+    <rect x="0" y="0" width="210" height="36" rx="8" fill="#7c3aed"/>
+    <rect x="0" y="26" width="210" height="10" fill="#7c3aed"/>
+    <text x="105" y="23" text-anchor="middle" fill="#ffffff" font-size="13" font-weight="bold">3. Admin Review &amp; Diff</text>
+
+    <text x="15" y="58" fill="#f8fafc" font-size="11" font-weight="600">Admin Dashboard Interface</text>
+    <text x="15" y="78" fill="#cbd5e1" font-size="10">So sánh dữ liệu hiện tại vs JSON Diff</text>
+    <text x="15" y="96" fill="#94a3b8" font-size="10">Đánh giá tính xác thực của đề xuất</text>
+    <rect x="15" y="110" width="180" height="26" rx="4" fill="#334155"/>
+    <text x="105" y="127" text-anchor="middle" fill="#c084fc" font-size="10" font-weight="bold">Decision Point</text>
+  </g>
+
+  <!-- Branch Approved (Green) -->
+  <path d="M 780 140 L 830 140 L 830 290" stroke="#10b981" stroke-width="2" fill="none" marker-end="url(#green-arrow)"/>
+  <text x="835" y="210" fill="#10b981" font-size="11" font-weight="bold">APPROVED</text>
+
+  <g transform="translate(690, 300)" filter="url(#shadow)">
+    <rect width="240" height="130" rx="8" fill="url(#card-dark)" stroke="#10b981" stroke-width="2"/>
+    <rect x="0" y="0" width="240" height="32" rx="8" fill="#059669"/>
+    <rect x="0" y="22" width="240" height="10" fill="#059669"/>
+    <text x="120" y="20" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="bold">4A. Cập nhật Dữ liệu Chính thức</text>
+    
+    <text x="15" y="52" fill="#f8fafc" font-size="10">• Prisma cập nhật Business / Article</text>
+    <text x="15" y="70" fill="#6ee7b7" font-size="10" font-weight="bold">• ChangeProposal status → "APPROVED"</text>
+    <text x="15" y="88" fill="#cbd5e1" font-size="10">• Gửi Notification cho Proposer</text>
+    <text x="15" y="106" fill="#94a3b8" font-size="10">• Dữ liệu mới hiển thị công khai</text>
+  </g>
+
+  <!-- Branch Rejected (Red) -->
+  <path d="M 780 200 L 780 260 L 400 260 L 400 290" stroke="#ef4444" stroke-width="2" fill="none" marker-end="url(#red-arrow)"/>
+  <text x="590" y="250" fill="#ef4444" font-size="11" font-weight="bold">REJECTED</text>
+
+  <g transform="translate(280, 300)" filter="url(#shadow)">
+    <rect width="240" height="130" rx="8" fill="url(#card-dark)" stroke="#ef4444" stroke-width="2"/>
+    <rect x="0" y="0" width="240" height="32" rx="8" fill="#dc2626"/>
+    <rect x="0" y="22" width="240" height="10" fill="#dc2626"/>
+    <text x="120" y="20" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="bold">4B. Từ chối &amp; Giữ nguyên Dữ liệu</text>
+    
+    <text x="15" y="52" fill="#f8fafc" font-size="10">• Giữ nguyên dữ liệu Business/Article cũ</text>
+    <text x="15" y="70" fill="#fca5a5" font-size="10" font-weight="bold">• ChangeProposal status → "REJECTED"</text>
+    <text x="15" y="88" fill="#cbd5e1" font-size="10">• Gửi Notification từ chối cho Proposer</text>
+    <text x="15" y="106" fill="#94a3b8" font-size="10">• Không thay đổi bản ghi gốc</text>
+  </g>
+
+  <!-- Bottom Info Banner -->
+  <rect x="30" y="445" width="900" height="28" rx="4" fill="#1e293b"/>
+  <text x="480" y="463" text-anchor="middle" fill="#94a3b8" font-size="10">
+    Cơ chế ChangeProposal giúp bảo vệ dữ liệu doanh nghiệp đã xác minh khỏi việc bị chỉnh sửa tuỳ tiện mà không có kiểm duyệt của Admin.
+  </text>
+</svg>

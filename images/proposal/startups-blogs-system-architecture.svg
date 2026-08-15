@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" width="100%" height="100%" style="background-color: #0f172a; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <defs>
+    <linearGradient id="vpc-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <linearGradient id="card-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#334155" />
+      <stop offset="100%" stop-color="#1e293b" />
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#38bdf8" />
+    </marker>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.3" />
+    </filter>
+  </defs>
+
+  <!-- Title -->
+  <text x="480" y="35" text-anchor="middle" fill="#f8fafc" font-size="20" font-weight="700">
+    Startups Blogs – Overall System &amp; AWS Cloud Architecture
+  </text>
+  <text x="480" y="56" text-anchor="middle" fill="#94a3b8" font-size="13">
+    Kiến trúc Tổng thể Hệ thống Điện toán Đám mây AWS (Terraform Provisioned - Region: us-east-1)
+  </text>
+
+  <!-- External User Tier -->
+  <g transform="translate(30, 80)" filter="url(#shadow)">
+    <rect width="160" height="70" rx="8" fill="#0284c7" stroke="#38bdf8" stroke-width="1.5"/>
+    <text x="80" y="32" text-anchor="middle" fill="#ffffff" font-size="13" font-weight="bold">Client Browser</text>
+    <text x="80" y="50" text-anchor="middle" fill="#e0f2fe" font-size="11">React 19 SPA (Vite)</text>
+  </g>
+
+  <!-- Arrow to CloudFront -->
+  <line x1="190" y1="115" x2="245" y2="115" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Edge & CDN Tier -->
+  <g transform="translate(250, 80)" filter="url(#shadow)">
+    <rect width="180" height="70" rx="8" fill="url(#card-grad)" stroke="#f97316" stroke-width="1.5"/>
+    <text x="90" y="30" text-anchor="middle" fill="#f8fafc" font-size="13" font-weight="bold">Amazon CloudFront</text>
+    <text x="90" y="48" text-anchor="middle" fill="#fdba74" font-size="11">CDN &amp; Edge Caching</text>
+  </g>
+
+  <!-- Arrow to S3 Frontend -->
+  <line x1="430" y1="115" x2="485" y2="115" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <g transform="translate(490, 80)" filter="url(#shadow)">
+    <rect width="180" height="70" rx="8" fill="url(#card-grad)" stroke="#f97316" stroke-width="1.5"/>
+    <text x="90" y="30" text-anchor="middle" fill="#f8fafc" font-size="13" font-weight="bold">Amazon S3 Frontend</text>
+    <text x="90" y="48" text-anchor="middle" fill="#fdba74" font-size="11">Static Web Hosting</text>
+  </g>
+
+  <!-- API Gateway -->
+  <line x1="110" y1="150" x2="110" y2="210" stroke="#38bdf8" stroke-width="2"/>
+  <line x1="110" y1="210" x2="245" y2="210" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <g transform="translate(250, 180)" filter="url(#shadow)">
+    <rect width="180" height="60" rx="8" fill="url(#card-grad)" stroke="#a855f7" stroke-width="1.5"/>
+    <text x="90" y="28" text-anchor="middle" fill="#f8fafc" font-size="13" font-weight="bold">Amazon API Gateway</text>
+    <text x="90" y="46" text-anchor="middle" fill="#c084fc" font-size="11">REST API Routing</text>
+  </g>
+
+  <!-- AWS VPC Container Box -->
+  <g transform="translate(30, 260)">
+    <rect width="900" height="230" rx="12" fill="url(#vpc-bg)" stroke="#475569" stroke-width="2" stroke-dasharray="6,6"/>
+    <text x="20" y="25" fill="#94a3b8" font-size="13" font-weight="bold">Amazon VPC (Virtual Private Cloud - 10.0.0.0/16)</text>
+    
+    <!-- Public Subnet Box -->
+    <g transform="translate(20, 40)">
+      <rect width="410" height="170" rx="8" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
+      <text x="15" y="22" fill="#38bdf8" font-size="12" font-weight="bold">Public Subnet (Application Tier)</text>
+      
+      <!-- EC2 Backend -->
+      <g transform="translate(20, 35)" filter="url(#shadow)">
+        <rect width="370" height="115" rx="6" fill="#0f172a" stroke="#0284c7" stroke-width="1.5"/>
+        <text x="185" y="28" text-anchor="middle" fill="#f8fafc" font-size="14" font-weight="bold">Amazon EC2 (NestJS Backend API)</text>
+        <text x="185" y="48" text-anchor="middle" fill="#cbd5e1" font-size="11">REST Controllers, AuthGuard, Business Logic</text>
+        
+        <!-- Modules Badges -->
+        <rect x="20" y="65" width="100" height="30" rx="4" fill="#334155"/>
+        <text x="70" y="84" text-anchor="middle" fill="#f8fafc" font-size="10">Prisma ORM</text>
+        
+        <rect x="135" y="65" width="100" height="30" rx="4" fill="#334155"/>
+        <text x="185" y="84" text-anchor="middle" fill="#f8fafc" font-size="10">aws-jwt-verify</text>
+        
+        <rect x="250" y="65" width="100" height="30" rx="4" fill="#334155"/>
+        <text x="300" y="84" text-anchor="middle" fill="#f8fafc" font-size="10">S3 SDK / Upload</text>
+      </g>
+    </g>
+
+    <!-- Private Subnet Box -->
+    <g transform="translate(460, 40)">
+      <rect width="420" height="170" rx="8" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+      <text x="15" y="22" fill="#10b981" font-size="12" font-weight="bold">Private Subnet (Database Tier)</text>
+      
+      <!-- RDS PostgreSQL -->
+      <g transform="translate(20, 35)" filter="url(#shadow)">
+        <rect width="380" height="115" rx="6" fill="#0f172a" stroke="#059669" stroke-width="1.5"/>
+        <text x="190" y="32" text-anchor="middle" fill="#f8fafc" font-size="14" font-weight="bold">Amazon RDS PostgreSQL</text>
+        <text x="190" y="52" text-anchor="middle" fill="#6ee7b7" font-size="11">Port 5432 (Access restricted to EC2 Security Group)</text>
+        <text x="190" y="75" text-anchor="middle" fill="#94a3b8" font-size="10">Users, Businesses, Funding, Proposals, Articles</text>
+        <text x="190" y="92" text-anchor="middle" fill="#94a3b8" font-size="10">ContactRequests, SavedBusinesses, Follows</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- Connect API Gateway to EC2 -->
+  <path d="M 340 240 L 340 295" stroke="#38bdf8" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- Connect EC2 to RDS -->
+  <line x1="450" y1="365" x2="495" y2="365" stroke="#10b981" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Amazon Cognito (Outside VPC) -->
+  <g transform="translate(710, 80)" filter="url(#shadow)">
+    <rect width="220" height="70" rx="8" fill="url(#card-grad)" stroke="#38bdf8" stroke-width="1.5"/>
+    <text x="110" y="28" text-anchor="middle" fill="#f8fafc" font-size="13" font-weight="bold">Amazon Cognito Pool</text>
+    <text x="110" y="46" text-anchor="middle" fill="#7dd3fc" font-size="11">Identity Provider (us-east-1)</text>
+  </g>
+
+  <!-- Arrow EC2 to Cognito -->
+  <path d="M 400 295 L 400 115 L 700 115" stroke="#38bdf8" stroke-width="2" stroke-dasharray="4,4" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- S3 Media Uploads -->
+  <g transform="translate(710, 180)" filter="url(#shadow)">
+    <rect width="220" height="60" rx="8" fill="url(#card-grad)" stroke="#f97316" stroke-width="1.5"/>
+    <text x="110" y="28" text-anchor="middle" fill="#f8fafc" font-size="13" font-weight="bold">Amazon S3 Media Bucket</text>
+    <text x="110" y="46" text-anchor="middle" fill="#fdba74" font-size="11">Logos, Covers, Documents</text>
+  </g>
+
+  <path d="M 425 330 L 700 210" stroke="#f97316" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- Footer Banner -->
+  <rect x="30" y="505" width="900" height="35" rx="6" fill="#1e293b"/>
+  <text x="480" y="527" text-anchor="middle" fill="#94a3b8" font-size="11">
+    Toàn bộ tài nguyên AWS (VPC, Security Groups, EC2, RDS, Cognito, S3, CloudFront) được định nghĩa qua mã nguồn Terraform tại terraform/
+  </text>
+</svg>
